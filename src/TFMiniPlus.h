@@ -15,24 +15,21 @@
 
 #include <cstddef>
 
-#if ARDUINO >= 100
-#include "Arduino.h"
-#else
-#include "WProgram.h"
-#endif
+#include "Particle.h"
 
 #define TFMINI_MEASUREMENT_CM 0x0165
 #define TFMINI_MEASUREMENT_MM 0x066A
 
 using namespace std;
 
-class TFMiniPlus {
- public:
+class TFMiniPlus
+{
+public:
   TFMiniPlus();
-  void begin(Stream* serial);
+  void begin(Stream *serial);
   bool readData();
   uint16_t getDistance();
-  double_t getSensorTemperature();
+  double getSensorTemperature();
   uint16_t getSensorRawTemperature();
   uint16_t getSignalStrength();
   String getVersion();
@@ -45,19 +42,19 @@ class TFMiniPlus {
   bool restoreFactorySettings();
   bool saveSettings();
 
- private:
-  uint8_t _readDataBuffer[9];
-  Stream* _stream;
-  void write(const uint8_t buffer[], const size_t length);
-  bool readCommandResponse(uint8_t buffer[], size_t buffer_size);
+private:
+  char _readDataBuffer[9];
+  Stream *_stream;
+  void write(const char buffer[], const size_t length);
+  bool readCommandResponse(char buffer[], size_t buffer_size);
   void skipToFrameHeader(uint8_t farameHeader);
 
-  static bool validateChecksum(const uint8_t buffer[], const size_t length);
-  static uint8_t generateChecksum(const uint8_t buffer[], size_t length);
-  static void resetBuffer(uint8_t buffer[], size_t length);
-  static void copyBuffer(uint8_t buffer1[], const uint8_t buffer2[], size_t buffer_size, size_t length);
-  static uint16_t readInt16FromBuffer(const uint8_t buffer[], size_t startIndex);
-  static uint32_t readInt32FromBuffer(const uint8_t buffer[], size_t startIndex);
+  static bool validateChecksum(const char buffer[], const size_t length);
+  static uint8_t generateChecksum(const char buffer[], size_t length);
+  static void resetBuffer(char buffer[], size_t length);
+  static void copyBuffer(char buffer1[], const char buffer2[], size_t buffer_size, size_t length);
+  static uint16_t readInt16FromBuffer(const char buffer[], size_t startIndex);
+  static uint32_t readInt32FromBuffer(const char buffer[], size_t startIndex);
 };
 
 #endif
